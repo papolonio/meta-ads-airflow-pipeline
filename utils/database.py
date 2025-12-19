@@ -1,10 +1,3 @@
-"""
-Database connection and operations module.
-
-This module handles all database connections and data operations
-for both PostgreSQL and SQL Server databases.
-"""
-
 import os
 import json
 from typing import List, Dict

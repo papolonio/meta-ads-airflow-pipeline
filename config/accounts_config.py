@@ -1,10 +1,3 @@
-"""
-Account configuration module for managing multiple Meta Ads accounts.
-
-This module handles the configuration and management of multiple Meta Business Manager
-accounts, including token rotation and account-to-table mapping.
-"""
-
 import os
 from typing import List, Dict, Tuple
 

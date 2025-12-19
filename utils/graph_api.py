@@ -1,10 +1,3 @@
-"""
-Meta Graph API client and data extraction module.
-
-This module handles all interactions with the Meta (Facebook/Instagram) Graph API,
-including data extraction, pagination, rate limiting, and data transformation.
-"""
-
 import os
 import time
 import json

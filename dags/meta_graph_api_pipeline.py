@@ -1,20 +1,3 @@
-"""
-Meta Graph API Data Pipeline
-
-This DAG orchestrates the extraction of advertising data from Meta (Facebook/Instagram)
-Graph API for multiple Business Manager accounts. It processes data in parallel groups
-and syncs it to both PostgreSQL and SQL Server databases.
-
-Features:
-- Multi-account management (configurable via environment variables)
-- Parallel processing with task groups
-- Automatic retry on failure
-- Rate limiting and error handling
-- Database synchronization (PostgreSQL -> SQL Server)
-
-Schedule: Runs 3 times daily (8:00, 14:00, 20:00) Monday to Saturday
-"""
-
 import os
 import sys
 from datetime import timedelta

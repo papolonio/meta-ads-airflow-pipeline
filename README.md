@@ -1,23 +1,23 @@
-# Meta Graph API Data Pipeline
+# Pipeline de Dados Meta Graph API
 
 [![Apache Airflow](https://img.shields.io/badge/Apache%20Airflow-2.7.3-017CEE?style=flat&logo=Apache%20Airflow&logoColor=white)](https://airflow.apache.org/)
 [![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-CC2927?style=flat&logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/sql-server)
 
-A production-ready, scalable Apache Airflow pipeline for extracting, transforming, and loading advertising data from Meta's Graph API (Facebook & Instagram) across multiple Business Manager accounts.
+Pipeline de dados escalável e pronto para produção usando Apache Airflow para extrair, transformar e carregar dados de publicidade da Meta Graph API (Facebook & Instagram) através de múltiplas contas do Business Manager.
 
-## 🎯 Overview
+## 🎯 Visão Geral
 
-This project demonstrates a robust data engineering solution for managing advertising data from multiple Meta Business Manager accounts. It showcases:
+Este projeto demonstra uma solução robusta de engenharia de dados para gerenciar dados de publicidade de múltiplas contas do Meta Business Manager. Apresenta:
 
-- **Multi-account orchestration** - Manages 10+ advertising accounts with intelligent token rotation
-- **Parallel processing** - Task groups for optimized extraction performance
-- **Enterprise-grade architecture** - Separation of concerns, config management, and error handling
-- **Database synchronization** - Dual-database strategy (PostgreSQL for data lake, SQL Server for analytics)
-- **Production best practices** - Environment-based configuration, comprehensive logging, retry mechanisms
+- **Orquestração multi-conta** - Gerencia 10+ contas publicitárias com rotação inteligente de tokens
+- **Processamento paralelo** - Task groups para performance otimizada de extração
+- **Arquitetura enterprise** - Separação de responsabilidades, gerenciamento de configuração e tratamento de erros
+- **Sincronização de banco de dados** - Estratégia dual-database (PostgreSQL para data lake, SQL Server para analytics)
+- **Boas práticas de produção** - Configuração baseada em variáveis de ambiente, logging completo, mecanismos de retry
 
-## 🏗️ Architecture
+## 🏗️ Arquitetura
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -25,8 +25,8 @@ This project demonstrates a robust data engineering solution for managing advert
 │                                                                 │
 │  ┌──────────────┐      ┌──────────────┐                        │
 │  │ Task Group 1 │      │ Task Group 2 │                        │
-│  │ Accounts 1-5 │  →   │ Accounts 6-10│   →   ┌─────────────┐ │
-│  │  (Parallel)  │      │  (Parallel)  │       │ Sync to SQL │ │
+│  │ Contas 1-5   │  →   │ Contas 6-10  │   →   ┌─────────────┐ │
+│  │  (Paralelo)  │      │  (Paralelo)  │       │ Sync SQL    │ │
 │  └──────────────┘      └──────────────┘       └─────────────┘ │
 └─────────────────────────────────────────────────────────────────┘
                 ↓                                        ↓
@@ -34,130 +34,132 @@ This project demonstrates a robust data engineering solution for managing advert
       │   PostgreSQL     │                    │   SQL Server     │
       │   (Data Lake)    │    ═══════>        │   (Analytics)    │
       │                  │    Sync Views      │                  │
-      │ • Raw ads data   │                    │ • Aggregated data│
-      │ • Actions data   │                    │ • Business views │
-      │ • Multi-accounts │                    │ • Reporting      │
+      │ • Dados brutos   │                    │ • Dados agregados│
+      │ • Dados actions  │                    │ • Views negócio  │
+      │ • Multi-contas   │                    │ • Relatórios     │
       └──────────────────┘                    └──────────────────┘
 ```
 
-### Key Components
+### Componentes Principais
 
-1. **DAG Orchestrator** ([meta_graph_api_pipeline.py](dags/meta_graph_api_pipeline.py))
-   - Schedules and coordinates all tasks
-   - Manages parallel execution with task groups
-   - Handles retries and failure scenarios
+1. **Orquestrador DAG** ([meta_graph_api_pipeline.py](dags/meta_graph_api_pipeline.py))
+   - Agenda e coordena todas as tarefas
+   - Gerencia execução paralela com task groups
+   - Lida com retries e cenários de falha
 
-2. **Graph API Client** ([utils/graph_api.py](utils/graph_api.py))
-   - Abstracts Meta Graph API interactions
-   - Implements pagination and rate limiting
-   - Processes and transforms API responses
+2. **Cliente Graph API** ([utils/graph_api.py](utils/graph_api.py))
+   - Abstrai interações com Meta Graph API
+   - Implementa paginação e rate limiting
+   - Processa e transforma respostas da API
 
-3. **Database Manager** ([utils/database.py](utils/database.py))
-   - Handles all database operations
-   - Implements upsert pattern for data consistency
-   - Manages cross-database synchronization
+3. **Gerenciador de Banco de Dados** ([utils/database.py](utils/database.py))
+   - Gerencia todas as operações de banco de dados
+   - Implementa padrão upsert para consistência de dados
+   - Gerencia sincronização cross-database
 
-4. **Configuration Layer** ([config/accounts_config.py](config/accounts_config.py))
-   - Environment-based configuration
-   - Multi-account management with token rotation
-   - Validation and error checking
+4. **Camada de Configuração** ([config/accounts_config.py](config/accounts_config.py))
+   - Configuração baseada em variáveis de ambiente
+   - Gerenciamento multi-conta com rotação de tokens
+   - Validação e verificação de erros
 
-## 🚀 Features
+## 🚀 Funcionalidades
 
-### Multi-Account Management
-- **Dynamic account configuration** via environment variables
-- **Intelligent token rotation** to distribute API rate limits
-- **Parallel processing** with configurable task groups
-- **Per-account tables** for data isolation and scalability
+### Gerenciamento Multi-Conta
+- **Configuração dinâmica de contas** via variáveis de ambiente
+- **Rotação inteligente de tokens** para distribuir limites de rate da API
+- **Processamento paralelo** com task groups configuráveis
+- **Tabelas por conta** para isolamento e escalabilidade de dados
 
-### Robust Data Pipeline
-- **Incremental loads** with configurable retention period (default: 15 days)
-- **Upsert operations** to prevent duplicates
-- **Comprehensive error handling** with automatic retries
-- **Rate limit management** with exponential backoff
+### Pipeline de Dados Robusto
+- **Cargas incrementais** com período de retenção configurável (padrão: 15 dias)
+- **Operações upsert** para prevenir duplicatas
+- **Tratamento de erros abrangente** com retries automáticos
+- **Gerenciamento de rate limit** com backoff exponencial
 
-### Enterprise Features
-- **Environment-based configuration** - No hardcoded credentials
-- **Modular architecture** - Clean separation of concerns
-- **Comprehensive logging** - Full visibility into pipeline execution
-- **Database synchronization** - Automated data propagation
-- **Scalable design** - Easily add new accounts or data sources
+### Recursos Enterprise
+- **Configuração baseada em ambiente** - Sem credenciais hardcoded
+- **Arquitetura modular** - Separação clara de responsabilidades
+- **Logging abrangente** - Visibilidade completa da execução do pipeline
+- **Sincronização de banco de dados** - Propagação automática de dados
+- **Design escalável** - Fácil adicionar novas contas ou fontes de dados
 
-## 📋 Prerequisites
+## 📋 Pré-requisitos
 
 - Python 3.8+
 - Apache Airflow 2.7.3+
 - PostgreSQL 12+
-- SQL Server 2019+ (or Azure SQL Database)
-- Meta Business Manager account(s) with API access
+- SQL Server 2019+ (ou Azure SQL Database)
+- Conta(s) Meta Business Manager com acesso à API
 
-## 🛠️ Installation
+## 🛠️ Instalação
 
-### 1. Clone the Repository
+### 1. Clonar o Repositório
 
 ```bash
-git clone <repository-url>
-cd airflow-graph-api
+git clone https://github.com/seu-usuario/meta-ads-data-pipeline.git
+cd meta-ads-data-pipeline
 ```
 
-### 2. Create Virtual Environment
+### 2. Criar Ambiente Virtual
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+venv\Scripts\activate  # Windows
+# source venv/bin/activate  # Linux/Mac
 ```
 
-### 3. Install Dependencies
+### 3. Instalar Dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure Environment Variables
+### 4. Configurar Variáveis de Ambiente
 
-Copy the example environment file and configure it with your credentials:
+Copie o arquivo de exemplo e configure com suas credenciais:
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` with your configuration:
+Edite o `.env` com suas configurações:
 
 ```bash
-# PostgreSQL Configuration
-POSTGRES_HOST=your-postgres-host
+# Configuração PostgreSQL
+POSTGRES_HOST=seu-host-postgres
 POSTGRES_PORT=5432
-POSTGRES_USER=your-user
-POSTGRES_PASSWORD=your-password
-POSTGRES_DATABASE=your-database
-POSTGRES_SCHEMA=your-schema
+POSTGRES_USER=seu-usuario
+POSTGRES_PASSWORD=sua-senha
+POSTGRES_DATABASE=seu-database
+POSTGRES_SCHEMA=seu-schema
 
-# SQL Server Configuration
-SQLSERVER_HOST=your-sqlserver.database.windows.net
+# Configuração SQL Server
+SQLSERVER_HOST=seu-sqlserver.database.windows.net
 SQLSERVER_PORT=1433
-SQLSERVER_DATABASE=your-database
-SQLSERVER_USER=your-user
-SQLSERVER_PASSWORD=your-password
+SQLSERVER_DATABASE=seu-database
+SQLSERVER_USER=seu-usuario
+SQLSERVER_PASSWORD=sua-senha
 SQLSERVER_SCHEMA=graph
 
-# Meta Graph API Configuration
+# Configuração Meta Graph API
 GRAPH_API_TOKENS=token1,token2,token3
-META_ACCOUNTS=account_id_1:bm_01,account_id_2:bm_02,account_id_3:bm_03
+META_ACCOUNTS=id_conta_1:bm_01,id_conta_2:bm_02,id_conta_3:bm_03
 
-# API Configuration
+# Configuração da API
 GRAPH_API_VERSION=v19.0
 DATA_RETENTION_DAYS=15
 ```
 
-### 5. Database Setup
+### 5. Configurar Banco de Dados
 
-Create the required tables in PostgreSQL:
+Crie as tabelas necessárias no PostgreSQL:
 
 ```sql
--- Example schema for ads data
-CREATE SCHEMA IF NOT EXISTS your_schema;
+-- Criar schema
+CREATE SCHEMA IF NOT EXISTS seu_schema;
 
-CREATE TABLE your_schema.bm_01 (
+-- Criar tabela de exemplo para ads
+CREATE TABLE seu_schema.bm_01 (
     unique_id VARCHAR(32) PRIMARY KEY,
     account_id VARCHAR(50),
     account_name VARCHAR(255),
@@ -176,7 +178,8 @@ CREATE TABLE your_schema.bm_01 (
     date DATE
 );
 
-CREATE TABLE your_schema.bm_01_actions (
+-- Criar tabela de actions
+CREATE TABLE seu_schema.bm_01_actions (
     account_id VARCHAR(50),
     ad_id VARCHAR(50),
     action_type VARCHAR(100),
@@ -184,22 +187,22 @@ CREATE TABLE your_schema.bm_01_actions (
     date DATE
 );
 
--- Create views for data consolidation
-CREATE VIEW your_schema.vw_graph_ads AS
-SELECT * FROM your_schema.bm_01
+-- Criar views para consolidação de dados
+CREATE VIEW seu_schema.vw_graph_ads AS
+SELECT * FROM seu_schema.bm_01
 UNION ALL
-SELECT * FROM your_schema.bm_02
--- ... add all your account tables
+SELECT * FROM seu_schema.bm_02
+-- ... adicione todas as suas tabelas de contas
 ;
 ```
 
-### 6. Initialize Airflow
+### 6. Inicializar Airflow
 
 ```bash
-# Initialize Airflow database
+# Inicializar banco de dados do Airflow
 airflow db init
 
-# Create admin user
+# Criar usuário admin
 airflow users create \
     --username admin \
     --firstname Admin \
@@ -208,166 +211,212 @@ airflow users create \
     --email admin@example.com
 ```
 
-## 🎮 Usage
+## 🎮 Uso
 
-### Start Airflow
+### Iniciar Airflow
 
 ```bash
-# Start the web server (default port 8080)
+# Iniciar web server (porta padrão 8080)
 airflow webserver --port 8080
 
-# In another terminal, start the scheduler
+# Em outro terminal, iniciar o scheduler
 airflow scheduler
 ```
 
-### Access Airflow UI
+### Acessar Interface do Airflow
 
-Navigate to `http://localhost:8080` and login with your credentials.
+Navegue para `http://localhost:8080` e faça login com suas credenciais.
 
-### Enable the DAG
+### Habilitar a DAG
 
-1. Find the DAG named `meta_graph_api_pipeline`
-2. Toggle it to "On"
-3. The DAG will run according to schedule: **8:00, 14:00, 20:00 (Mon-Sat)**
+1. Encontre a DAG chamada `meta_graph_api_pipeline`
+2. Alterne para "On"
+3. A DAG executará conforme agendamento: **8:00, 14:00, 20:00 (Seg-Sáb)**
 
-### Manual Trigger
+### Trigger Manual
 
-You can manually trigger the DAG from the UI or CLI:
+Você pode disparar manualmente a DAG pela UI ou CLI:
 
 ```bash
 airflow dags trigger meta_graph_api_pipeline
 ```
 
-## 📊 Data Flow
+## 📊 Fluxo de Dados
 
-### Extraction Phase
-1. DAG triggers parallel task groups
-2. Each task fetches data for one account via Graph API
-3. Data includes:
-   - Ad performance metrics (spend, clicks, impressions)
-   - Campaign information and status
-   - Conversion actions and events
-4. Data is validated and transformed
+### Fase de Extração
+1. DAG dispara task groups paralelos
+2. Cada task busca dados de uma conta via Graph API
+3. Dados incluem:
+   - Métricas de performance de anúncios (gasto, cliques, impressões)
+   - Informações e status de campanhas
+   - Ações e eventos de conversão
+4. Dados são validados e transformados
 
-### Loading Phase
-1. Data is upserted to PostgreSQL account-specific tables
-2. Duplicates are prevented using unique_id hash
-3. Historical data is maintained based on retention policy
+### Fase de Carregamento
+1. Dados são inseridos no PostgreSQL em tabelas específicas por conta
+2. Duplicatas são prevenidas usando hash unique_id
+3. Dados históricos mantidos baseado na política de retenção
 
-### Synchronization Phase
-1. PostgreSQL views aggregate all account data
-2. Data is synced to SQL Server for analytics
-3. Old records are deleted before inserting new ones
-4. Parallel threads optimize large data transfers
+### Fase de Sincronização
+1. Views do PostgreSQL agregam dados de todas as contas
+2. Dados são sincronizados para SQL Server para analytics
+3. Registros antigos são deletados antes de inserir novos
+4. Threads paralelas otimizam transferências de grandes volumes
 
-## 🔧 Configuration
+## 🔧 Configuração
 
-### Adding New Accounts
+### Adicionar Novas Contas
 
-Simply update your `.env` file:
+Simplesmente atualize seu arquivo `.env`:
 
 ```bash
-META_ACCOUNTS=existing_accounts,new_account_id:bm_11
-GRAPH_API_TOKENS=existing_tokens,new_token
+META_ACCOUNTS=contas_existentes,nova_conta_id:bm_11
+GRAPH_API_TOKENS=tokens_existentes,novo_token
 ```
 
-The pipeline automatically discovers and processes new accounts.
+O pipeline descobre e processa automaticamente as novas contas.
 
-### Adjusting Schedule
+### Ajustar Agendamento
 
-Modify the `SCHEDULE_INTERVAL` in [meta_graph_api_pipeline.py](dags/meta_graph_api_pipeline.py):
+Modifique o `SCHEDULE_INTERVAL` em [meta_graph_api_pipeline.py](dags/meta_graph_api_pipeline.py):
 
 ```python
-SCHEDULE_INTERVAL = "0 8,14,20 * * 1-6"  # Cron format
+SCHEDULE_INTERVAL = "0 8,14,20 * * 1-6"  # Formato cron
 ```
 
-### Customizing Data Retention
+### Customizar Retenção de Dados
 
-Update `.env`:
+Atualize o `.env`:
 
 ```bash
-DATA_RETENTION_DAYS=30  # Fetch last 30 days instead of 15
+DATA_RETENTION_DAYS=30  # Buscar últimos 30 dias ao invés de 15
 ```
 
-## 🏆 Best Practices Demonstrated
+## 🏆 Boas Práticas Demonstradas
 
-### Code Organization
-- ✅ **Modular design** - Separate modules for API, database, and configuration
-- ✅ **DRY principle** - Reusable functions and classes
-- ✅ **Clear naming** - Self-documenting code with descriptive names
+### Organização de Código
+- ✅ **Design modular** - Módulos separados para API, database e configuração
+- ✅ **Princípio DRY** - Funções e classes reutilizáveis
+- ✅ **Nomenclatura clara** - Código auto-documentado com nomes descritivos
 
-### Configuration Management
-- ✅ **Environment variables** - No hardcoded credentials
-- ✅ **`.env.example`** - Template for easy setup
-- ✅ **Validation** - Configuration checks before execution
+### Gerenciamento de Configuração
+- ✅ **Variáveis de ambiente** - Sem credenciais hardcoded
+- ✅ **`.env.example`** - Template para fácil configuração
+- ✅ **Validação** - Verificações de configuração antes da execução
 
-### Error Handling
-- ✅ **Retry logic** - Automatic retries with exponential backoff
-- ✅ **Rate limiting** - Respects API limits
-- ✅ **Comprehensive logging** - Full execution visibility
-- ✅ **Graceful degradation** - Continues processing other accounts on failure
+### Tratamento de Erros
+- ✅ **Lógica de retry** - Retries automáticos com backoff exponencial
+- ✅ **Rate limiting** - Respeita limites da API
+- ✅ **Logging abrangente** - Visibilidade completa da execução
+- ✅ **Degradação gradual** - Continua processando outras contas em caso de falha
 
-### Database Operations
-- ✅ **Upsert pattern** - Prevents duplicates
-- ✅ **Batch processing** - Efficient bulk inserts
-- ✅ **Transaction management** - Data consistency
-- ✅ **Connection pooling** - Optimized resource usage
+### Operações de Banco de Dados
+- ✅ **Padrão upsert** - Previne duplicatas
+- ✅ **Processamento em lote** - Inserções bulk eficientes
+- ✅ **Gerenciamento de transações** - Consistência de dados
+- ✅ **Connection pooling** - Uso otimizado de recursos
 
-### Production Readiness
-- ✅ **Type hints** - Better IDE support and documentation
-- ✅ **Docstrings** - Clear function documentation
-- ✅ **Logging** - Execution visibility
-- ✅ **Testing structure** - Ready for unit tests
+### Pronto para Produção
+- ✅ **Type hints** - Melhor suporte de IDE e documentação
+- ✅ **Docstrings** - Documentação clara de funções
+- ✅ **Logging** - Visibilidade de execução
+- ✅ **Estrutura de testes** - Pronto para testes unitários
 
-## 📁 Project Structure
+## 📁 Estrutura do Projeto
 
 ```
-airflow-graph-api/
+meta-ads-data-pipeline/
 ├── dags/
-│   ├── meta_graph_api_pipeline.py      # Main DAG definition
-│   └── grax_midia_facebook_graph_api_new.py  # Legacy (for reference)
+│   ├── meta_graph_api_pipeline.py      # Definição principal da DAG
+│   └── grax_midia_facebook_graph_api_new.py  # Legacy (referência)
 ├── utils/
 │   ├── __init__.py
-│   ├── database.py                      # Database operations
-│   └── graph_api.py                     # Graph API client
+│   ├── database.py                      # Operações de banco de dados
+│   └── graph_api.py                     # Cliente Graph API
 ├── config/
 │   ├── __init__.py
-│   └── accounts_config.py               # Account management
-├── tests/                               # Unit tests (to be added)
+│   └── accounts_config.py               # Gerenciamento de contas
+├── tests/                               # Testes unitários (a adicionar)
 ├── docs/
-│   ├── ARCHITECTURE.md                  # Detailed architecture
-│   └── GIT_WORKFLOW.md                  # Git workflow guide
-├── .env.example                         # Environment template
-├── .gitignore                           # Git ignore rules
-├── requirements.txt                     # Python dependencies
-└── README.md                            # This file
+│   ├── ARCHITECTURE.md                  # Arquitetura detalhada
+│   └── GIT_WORKFLOW.md                  # Guia de workflow Git
+├── .env.example                         # Template de ambiente
+├── .gitignore                           # Regras de ignore do Git
+├── requirements.txt                     # Dependências Python
+└── README.md                            # Este arquivo
 ```
 
-## 🤝 Contributing
+## 🤝 Contribuindo
 
-This is a portfolio project, but suggestions are welcome! Please see [GIT_WORKFLOW.md](docs/GIT_WORKFLOW.md) for contribution guidelines.
+Este é um projeto de portfólio, mas sugestões são bem-vindas! Consulte [GIT_WORKFLOW.md](docs/GIT_WORKFLOW.md) para diretrizes de contribuição.
 
-## 📚 Additional Documentation
+## 📚 Documentação Adicional
 
-- [**Architecture Details**](docs/ARCHITECTURE.md) - In-depth technical architecture
-- [**Git Workflow**](docs/GIT_WORKFLOW.md) - Branching strategy and commit guidelines
+- [**Detalhes da Arquitetura**](docs/ARCHITECTURE.md) - Arquitetura técnica aprofundada
+- [**Workflow Git**](docs/GIT_WORKFLOW.md) - Estratégia de branches e diretrizes de commit
+- [**Guia de Setup**](SETUP_GUIDE.md) - Instruções detalhadas de instalação
 
-## 📝 License
+## 📝 Licença
 
-This project is for portfolio demonstration purposes.
+Este projeto é para fins de demonstração de portfólio.
 
-## 👤 Author
+## 👤 Autor
 
-**Data Engineering Portfolio Project**
+**Projeto de Portfólio - Engenharia de Dados**
 
-Demonstrating expertise in:
-- Apache Airflow orchestration
-- API integration and data extraction
-- Multi-database architecture
-- Production-ready Python development
-- Data engineering best practices
+Demonstrando expertise em:
+- Orquestração com Apache Airflow
+- Integração de APIs e extração de dados
+- Arquitetura multi-database
+- Desenvolvimento Python pronto para produção
+- Boas práticas de engenharia de dados
+
+### Competências Técnicas Demonstradas
+
+- ✅ **Apache Airflow** - Design de DAGs, agendamento, orquestração
+- ✅ **Python Avançado** - OOP, type hints, clean code, princípios SOLID
+- ✅ **Integração de APIs** - Meta Graph API, paginação, rate limiting
+- ✅ **Engenharia de Dados** - ETL, transformação, sincronização
+- ✅ **Arquitetura de Dados** - Data lake, analytics layer, multi-database
+- ✅ **Boas Práticas** - Documentação, logging, tratamento de erros
+- ✅ **DevOps** - Git workflow, Docker, gerenciamento de configuração
+- ✅ **Segurança** - Gestão de credenciais, variáveis de ambiente
+- ✅ **Performance** - Processamento paralelo, operações em lote
 
 ---
 
-**Note**: All sensitive information (credentials, account IDs, company names) has been removed and replaced with environment variable placeholders. This ensures the codebase can be safely shared while maintaining security best practices.
-# meta-ads-airflow-pipeline
+## 🎯 Sobre Este Projeto
+
+Este pipeline resolve um problema real de engenharia de dados: **como gerenciar e processar dados de múltiplas contas publicitárias de forma escalável, eficiente e confiável**.
+
+### Problema Resolvido
+
+Empresas que gerenciam múltiplas contas do Meta Business Manager enfrentam desafios como:
+- Coleta manual de dados de múltiplas contas
+- Rate limits da API
+- Inconsistência de dados
+- Falta de histórico consolidado
+- Processos não escaláveis
+
+### Solução Implementada
+
+Este pipeline automatiza completamente o processo, oferecendo:
+- ✅ Extração automática de 10+ contas simultaneamente
+- ✅ Rotação inteligente de tokens para otimizar rate limits
+- ✅ Dados consolidados em data lake (PostgreSQL)
+- ✅ Camada analítica pronta para BI (SQL Server)
+- ✅ Agendamento automático (3x por dia)
+- ✅ Tratamento robusto de erros e retries
+- ✅ Escalável para centenas de contas
+
+### Impacto
+
+- ⏱️ **Economia de tempo**: Horas de trabalho manual → Automático
+- 📊 **Qualidade de dados**: Dados consistentes e validados
+- 🚀 **Escalabilidade**: Fácil adicionar novas contas
+- 🔒 **Confiabilidade**: Retry automático, logging completo
+- 📈 **Insights**: Dados prontos para análise e BI
+
+---
+
+**Nota**: Todas as informações sensíveis (credenciais, IDs de contas, nomes de empresas) foram removidas e substituídas por placeholders de variáveis de ambiente. Isso garante que o código possa ser compartilhado com segurança mantendo as melhores práticas de segurança.

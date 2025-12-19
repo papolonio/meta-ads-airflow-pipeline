@@ -1,0 +1,58 @@
+{
+  "description": "Example configuration template - DO NOT use in production",
+  "note": "This file is for reference only. Use .env file for actual configuration.",
+
+  "postgresql": {
+    "host": "your-postgres-host.com",
+    "port": 5432,
+    "database": "your_database",
+    "user": "your_user",
+    "password": "your_secure_password",
+    "schema": "your_schema"
+  },
+
+  "sqlserver": {
+    "host": "your-server.database.windows.net",
+    "port": 1433,
+    "database": "your_database",
+    "user": "your_user",
+    "password": "your_secure_password",
+    "schema": "graph"
+  },
+
+  "meta_graph_api": {
+    "version": "v19.0",
+    "tokens": [
+      "EAAxxxxxxxxx...",
+      "EAAxxxxxxxxx...",
+      "EAAxxxxxxxxx..."
+    ],
+    "accounts": [
+      {
+        "account_id": "123456789",
+        "table_name": "bm_01",
+        "description": "Main Business Manager account"
+      },
+      {
+        "account_id": "987654321",
+        "table_name": "bm_02",
+        "description": "Secondary Business Manager account"
+      }
+    ]
+  },
+
+  "pipeline_settings": {
+    "data_retention_days": 15,
+    "rate_limit_sleep_seconds": 60,
+    "api_request_timeout": 30,
+    "database_batch_size": 1000,
+    "max_parallel_threads": 8
+  },
+
+  "airflow": {
+    "owner": "data-engineering",
+    "retries": 2,
+    "retry_delay_minutes": 5,
+    "schedule": "0 8,14,20 * * 1-6"
+  }
+}

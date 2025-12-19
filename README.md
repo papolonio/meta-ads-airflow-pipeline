@@ -83,7 +83,7 @@ Este projeto demonstra uma solução robusta de engenharia de dados para gerenci
 - **Sincronização de banco de dados** - Propagação automática de dados
 - **Design escalável** - Fácil adicionar novas contas ou fontes de dados
 
-## 📋 Pré-requisitos
+## Pré-requisitos
 
 - Python 3.8+
 - Apache Airflow 2.7.3+
@@ -366,19 +366,6 @@ Demonstrando expertise em:
 - Arquitetura multi-database
 - Desenvolvimento Python pronto para produção
 - Boas práticas de engenharia de dados
-
-### Competências Técnicas Demonstradas
-
--  **Apache Airflow** - Design de DAGs, agendamento, orquestração
--  **Python Avançado** - OOP, type hints, clean code, princípios SOLID
--  **Integração de APIs** - Meta Graph API, paginação, rate limiting
--  **Engenharia de Dados** - ETL, transformação, sincronização
--  **Arquitetura de Dados** - Data lake, analytics layer, multi-database
--  **Boas Práticas** - Documentação, logging, tratamento de erros
--  **DevOps** - Git workflow, Docker, gerenciamento de configuração
--  **Segurança** - Gestão de credenciais, variáveis de ambiente
--  **Performance** - Processamento paralelo, operações em lote
-
 ---
 
 ## Sobre Este Projeto

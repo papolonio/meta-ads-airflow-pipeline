@@ -420,3 +420,4 @@ Este pipeline automatiza completamente o processo, oferecendo:
 ---
 
 **Nota**: Todas as informações sensíveis (credenciais, IDs de contas, nomes de empresas) foram removidas e substituídas por placeholders de variáveis de ambiente. Isso garante que o código possa ser compartilhado com segurança mantendo as melhores práticas de segurança.
+# meta-ads-airflow-pipeline

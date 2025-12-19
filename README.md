@@ -7,7 +7,7 @@
 
 Pipeline de dados escalável e pronto para produção usando Apache Airflow para extrair, transformar e carregar dados de publicidade da Meta Graph API (Facebook & Instagram) através de múltiplas contas do Business Manager.
 
-## 🎯 Visão Geral
+## Visão Geral
 
 Este projeto demonstra uma solução robusta de engenharia de dados para gerenciar dados de publicidade de múltiplas contas do Meta Business Manager. Apresenta:
 
@@ -17,7 +17,7 @@ Este projeto demonstra uma solução robusta de engenharia de dados para gerenci
 - **Sincronização de banco de dados** - Estratégia dual-database (PostgreSQL para data lake, SQL Server para analytics)
 - **Boas práticas de produção** - Configuração baseada em variáveis de ambiente, logging completo, mecanismos de retry
 
-## 🏗️ Arquitetura
+## Arquitetura
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -62,7 +62,7 @@ Este projeto demonstra uma solução robusta de engenharia de dados para gerenci
    - Gerenciamento multi-conta com rotação de tokens
    - Validação e verificação de erros
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
 ### Gerenciamento Multi-Conta
 - **Configuração dinâmica de contas** via variáveis de ambiente
@@ -211,7 +211,7 @@ airflow users create \
     --email admin@example.com
 ```
 
-## 🎮 Uso
+## Uso
 
 ### Iniciar Airflow
 
@@ -263,7 +263,7 @@ airflow dags trigger meta_graph_api_pipeline
 3. Registros antigos são deletados antes de inserir novos
 4. Threads paralelas otimizam transferências de grandes volumes
 
-## 🔧 Configuração
+## Configuração
 
 ### Adicionar Novas Contas
 
@@ -292,37 +292,37 @@ Atualize o `.env`:
 DATA_RETENTION_DAYS=30  # Buscar últimos 30 dias ao invés de 15
 ```
 
-## 🏆 Boas Práticas Demonstradas
+## Boas Práticas Demonstradas
 
 ### Organização de Código
-- ✅ **Design modular** - Módulos separados para API, database e configuração
-- ✅ **Princípio DRY** - Funções e classes reutilizáveis
-- ✅ **Nomenclatura clara** - Código auto-documentado com nomes descritivos
+-  **Design modular** - Módulos separados para API, database e configuração
+-  **Princípio DRY** - Funções e classes reutilizáveis
+-  **Nomenclatura clara** - Código auto-documentado com nomes descritivos
 
 ### Gerenciamento de Configuração
-- ✅ **Variáveis de ambiente** - Sem credenciais hardcoded
-- ✅ **`.env.example`** - Template para fácil configuração
-- ✅ **Validação** - Verificações de configuração antes da execução
+-  **Variáveis de ambiente** - Sem credenciais hardcoded
+-  **`.env.example`** - Template para fácil configuração
+-  **Validação** - Verificações de configuração antes da execução
 
 ### Tratamento de Erros
-- ✅ **Lógica de retry** - Retries automáticos com backoff exponencial
-- ✅ **Rate limiting** - Respeita limites da API
-- ✅ **Logging abrangente** - Visibilidade completa da execução
-- ✅ **Degradação gradual** - Continua processando outras contas em caso de falha
+-  **Lógica de retry** - Retries automáticos com backoff exponencial
+-  **Rate limiting** - Respeita limites da API
+-  **Logging abrangente** - Visibilidade completa da execução
+-  **Degradação gradual** - Continua processando outras contas em caso de falha
 
 ### Operações de Banco de Dados
-- ✅ **Padrão upsert** - Previne duplicatas
-- ✅ **Processamento em lote** - Inserções bulk eficientes
-- ✅ **Gerenciamento de transações** - Consistência de dados
-- ✅ **Connection pooling** - Uso otimizado de recursos
+-  **Padrão upsert** - Previne duplicatas
+-  **Processamento em lote** - Inserções bulk eficientes
+-  **Gerenciamento de transações** - Consistência de dados
+-  **Connection pooling** - Uso otimizado de recursos
 
 ### Pronto para Produção
-- ✅ **Type hints** - Melhor suporte de IDE e documentação
-- ✅ **Docstrings** - Documentação clara de funções
-- ✅ **Logging** - Visibilidade de execução
-- ✅ **Estrutura de testes** - Pronto para testes unitários
+-  **Type hints** - Melhor suporte de IDE e documentação
+-  **Docstrings** - Documentação clara de funções
+-  **Logging** - Visibilidade de execução
+-  **Estrutura de testes** - Pronto para testes unitários
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 meta-ads-data-pipeline/
@@ -346,21 +346,17 @@ meta-ads-data-pipeline/
 └── README.md                            # Este arquivo
 ```
 
-## 🤝 Contribuindo
-
-Este é um projeto de portfólio, mas sugestões são bem-vindas! Consulte [GIT_WORKFLOW.md](docs/GIT_WORKFLOW.md) para diretrizes de contribuição.
-
-## 📚 Documentação Adicional
+## Documentação Adicional
 
 - [**Detalhes da Arquitetura**](docs/ARCHITECTURE.md) - Arquitetura técnica aprofundada
 - [**Workflow Git**](docs/GIT_WORKFLOW.md) - Estratégia de branches e diretrizes de commit
 - [**Guia de Setup**](SETUP_GUIDE.md) - Instruções detalhadas de instalação
 
-## 📝 Licença
+## Licença
 
 Este projeto é para fins de demonstração de portfólio.
 
-## 👤 Autor
+## Autor
 
 **Projeto de Portfólio - Engenharia de Dados**
 
@@ -373,19 +369,19 @@ Demonstrando expertise em:
 
 ### Competências Técnicas Demonstradas
 
-- ✅ **Apache Airflow** - Design de DAGs, agendamento, orquestração
-- ✅ **Python Avançado** - OOP, type hints, clean code, princípios SOLID
-- ✅ **Integração de APIs** - Meta Graph API, paginação, rate limiting
-- ✅ **Engenharia de Dados** - ETL, transformação, sincronização
-- ✅ **Arquitetura de Dados** - Data lake, analytics layer, multi-database
-- ✅ **Boas Práticas** - Documentação, logging, tratamento de erros
-- ✅ **DevOps** - Git workflow, Docker, gerenciamento de configuração
-- ✅ **Segurança** - Gestão de credenciais, variáveis de ambiente
-- ✅ **Performance** - Processamento paralelo, operações em lote
+-  **Apache Airflow** - Design de DAGs, agendamento, orquestração
+-  **Python Avançado** - OOP, type hints, clean code, princípios SOLID
+-  **Integração de APIs** - Meta Graph API, paginação, rate limiting
+-  **Engenharia de Dados** - ETL, transformação, sincronização
+-  **Arquitetura de Dados** - Data lake, analytics layer, multi-database
+-  **Boas Práticas** - Documentação, logging, tratamento de erros
+-  **DevOps** - Git workflow, Docker, gerenciamento de configuração
+-  **Segurança** - Gestão de credenciais, variáveis de ambiente
+-  **Performance** - Processamento paralelo, operações em lote
 
 ---
 
-## 🎯 Sobre Este Projeto
+## Sobre Este Projeto
 
 Este pipeline resolve um problema real de engenharia de dados: **como gerenciar e processar dados de múltiplas contas publicitárias de forma escalável, eficiente e confiável**.
 
@@ -401,23 +397,20 @@ Empresas que gerenciam múltiplas contas do Meta Business Manager enfrentam desa
 ### Solução Implementada
 
 Este pipeline automatiza completamente o processo, oferecendo:
-- ✅ Extração automática de 10+ contas simultaneamente
-- ✅ Rotação inteligente de tokens para otimizar rate limits
-- ✅ Dados consolidados em data lake (PostgreSQL)
-- ✅ Camada analítica pronta para BI (SQL Server)
-- ✅ Agendamento automático (3x por dia)
-- ✅ Tratamento robusto de erros e retries
-- ✅ Escalável para centenas de contas
+- Extração automática de 10+ contas simultaneamente
+- Rotação inteligente de tokens para otimizar rate limits
+- Dados consolidados em data lake (PostgreSQL)
+- Camada analítica pronta para BI (SQL Server)
+- Agendamento automático (3x por dia)
+- Tratamento robusto de erros e retries
+- Escalável para centenas de contas
 
 ### Impacto
 
-- ⏱️ **Economia de tempo**: Horas de trabalho manual → Automático
-- 📊 **Qualidade de dados**: Dados consistentes e validados
-- 🚀 **Escalabilidade**: Fácil adicionar novas contas
-- 🔒 **Confiabilidade**: Retry automático, logging completo
-- 📈 **Insights**: Dados prontos para análise e BI
+-  **Economia de tempo**: Horas de trabalho manual → Automático
+-  **Qualidade de dados**: Dados consistentes e validados
+-  **Escalabilidade**: Fácil adicionar novas contas
+-  **Confiabilidade**: Retry automático, logging completo
+-  **Insights**: Dados prontos para análise e BI
 
----
-
-**Nota**: Todas as informações sensíveis (credenciais, IDs de contas, nomes de empresas) foram removidas e substituídas por placeholders de variáveis de ambiente. Isso garante que o código possa ser compartilhado com segurança mantendo as melhores práticas de segurança.
 # meta-ads-airflow-pipeline
